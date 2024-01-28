@@ -1,0 +1,37 @@
+options:
+  debug:
+    type: boolean
+    default: False
+    description: Enable debug logging.
+  use-syslog:
+    type: boolean
+    default: True
+    description: |
+      Setting this to False will disable logging to syslog (the default).
+  linstor-uris:
+    type: string
+    default: ""
+    description: |
+      URI of the linstor controller, multiple Controllers can be specified with a comma
+  linstor-driver:
+    type: string
+    default: "drbd"
+    description: |
+      Name of the linstor driver used it can either be drbd or iscsi
+  volume-backend-name:
+    type: string
+    default: "linstor-drbd"
+    description: |
+      Name of the volume backend exported to cinder
+  rabbit-user:
+    type: string
+    default:
+    description: Username to request access on rabbitmq-server.
+  rabbit-vhost:
+    type: string
+    default:
+    description: RabbitMQ virtual host to request access on rabbitmq-server.
+  enable-telemetry-notifications:
+    type: boolean
+    default: False
+    description: Enable notifications to send to telemetry.

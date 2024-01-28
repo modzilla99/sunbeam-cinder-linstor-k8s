@@ -1,0 +1,47 @@
+# Copyright 2021 Canonical Ltd
+# See LICENSE file for licensing details.
+name: cinder-linstor-k8s
+summary: OpenStack volume service - Ceph backend
+maintainer: Openstack Charmers <openstack-charmers@lists.ubuntu.com>
+description: |
+  Cinder is the OpenStack project that provides volume management for
+  instances.  This charm provides basic integration with Linstor SDS
+  backends.
+version: 1
+bases:
+  - name: ubuntu
+    channel: 22.04/stable
+assumes:
+  - k8s-api
+  - juju >= 3.1
+tags:
+  - openstack
+  - storage
+  - misc
+source: https://opendev.org/openstack/charm-cinder-linstor-k8s
+issues: https://bugs.launchpad.net/charm-cinder-linstor-k8s
+
+containers:
+  cinder-volume:
+    resource: cinder-volume-image
+
+resources:
+  cinder-volume-image:
+    type: oci-image
+    description: OCI image for OpenStack Cinder Volume
+    upstream-source: docker.io/modzilla/cinder-consolidated-linstor:2023.2
+
+requires:
+  amqp:
+    interface: rabbitmq
+  database:
+    interface: mysql_client
+    limit: 1
+
+provides:
+  storage-backend:
+    interface: cinder-backend
+
+peers:
+  peers:
+    interface: cinder-peer

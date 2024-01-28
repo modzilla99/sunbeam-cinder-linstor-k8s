@@ -1,0 +1,34 @@
+###############################################################################
+# [ WARNING ]
+# cinder-volume configuration file maintained by cinder-linstor-operator
+# local changes will be overwritten.
+###############################################################################
+[DEFAULT]
+rootwrap_config = /etc/cinder/rootwrap.conf
+api_paste_confg = /etc/cinder/api-paste.ini
+debug = {{ options.debug }}
+use_syslog = {{ options.use_syslog }}
+auth_strategy = keystone
+state_path = /var/lib/cinder
+
+{% if amqp.transport_url %}
+transport_url = {{ amqp.transport_url }}
+{% endif %}
+
+enabled_backends = {{ cinder_linstor.volume_backend_name }}
+
+[database]
+{% if database.connection -%}
+connection = {{ database.connection }}
+{% endif -%}
+connection_recycle_time = 200
+
+{% include "parts/section-oslo-notifications" %}
+
+[{{ cinder_linstor.volume_backend_name }}]
+volume_backend_name = {{ cinder_linstor.volume_backend_name }}
+volume_driver = {{ cinder_linstor.volume_driver }}
+
+linstor_uris = {{ linstor_config.linstor_uri }}
+
+{% include "parts/section-oslo-messaging-rabbit" %}
